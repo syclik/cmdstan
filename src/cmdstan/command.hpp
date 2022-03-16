@@ -697,9 +697,9 @@ int command(int argc, const char *argv[]) {
     cmdstan::callbacks::color_interrupt interrupt(num_warmup, num_samples);
     std::cout << "\n\n\n"
 	      << "############################################################\n"
-	      << "## Welcome to the CmdStan v" << stan::MAJOR_VERSION << "."
+	      << "## Welcome to CmdStan v" << stan::MAJOR_VERSION << "."
 	      << stan::MINOR_VERSION << "."
-	      << stan::PATCH_VERSION << " with color outputs      ##\n"
+	      << stan::PATCH_VERSION << " with color outputs          ##\n"
 	      << "############################################################\n"
 	      << std::endl;
     
