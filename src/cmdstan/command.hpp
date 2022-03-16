@@ -21,6 +21,7 @@
 #include <cmdstan/write_profiling.hpp>
 #include <cmdstan/write_stan.hpp>
 #include <cmdstan/write_stan_flags.hpp>
+#include <cmdstan/callbacks/color_interrupt.hpp>
 #include <stan/callbacks/interrupt.hpp>
 #include <stan/callbacks/logger.hpp>
 #include <stan/callbacks/stream_logger.hpp>
@@ -416,6 +417,7 @@ int command(int argc, const char *argv[]) {
   stan::callbacks::writer init_writer;
   stan::callbacks::interrupt interrupt;
 
+
   //////////////////////////////////////////////////
   //                Initialize Model              //
   //////////////////////////////////////////////////
@@ -516,9 +518,11 @@ int command(int argc, const char *argv[]) {
     parser.print(diagnostic_writers[i]);
   }
 
-  int refresh
-      = dynamic_cast<int_argument *>(parser.arg("output")->arg("refresh"))
-            ->value();
+  int refresh = 0;
+  std::cout << "[INFO] Ignorning refresh parameter" << std::endl;
+  //= dynamic_cast<int_argument *>(parser.arg("output")->arg("refresh"))
+  //->value();
+  
 
   // Read initial parameter values or user-specified radius
   std::string init
@@ -690,6 +694,15 @@ int command(int argc, const char *argv[]) {
     bool adapt_engaged
         = dynamic_cast<bool_argument *>(adapt->arg("engaged"))->value();
 
+    cmdstan::callbacks::color_interrupt interrupt(num_warmup, num_samples);
+    std::cout << "\n\n\n"
+	      << "############################################################\n"
+	      << "## Welcome to the CmdStan v" << stan::MAJOR_VERSION << "."
+	      << stan::MINOR_VERSION << "."
+	      << stan::PATCH_VERSION << " with color outputs      ##\n"
+	      << "############################################################\n"
+	      << std::endl;
+    
     if (model.num_params_r() == 0 || algo->value() == "fixed_param") {
       if (algo->value() != "fixed_param")
         info(
