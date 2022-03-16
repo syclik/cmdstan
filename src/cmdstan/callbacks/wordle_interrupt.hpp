@@ -20,8 +20,6 @@ namespace callbacks {
 	wordle_num_(std::uniform_int_distribution<int>(1,10000)(g_)),
 	N_(-1) {
       stops_ = create_stops(N_warmup_, N_draws_, 6);
-      for (int n = 0; n < 6; n++)
-	wordle_colors_[n] = &gry_[0];
     }
 
     void operator()() {
@@ -59,14 +57,14 @@ namespace callbacks {
 	int stop_number = stop_location - &stops_[0] + 1;
 	//std::cout << "stopping at iteration_ = " << iteration_ << std::endl;
 	create_row_colors(stop_number, N_, wordle_colors_);
-	for (int n = 0; n < 6; n++) {
+	for (int n = 0; n < 5; n++) {
 	  std::cout << wordle_colors_[n];
 	}
 	std::cout << std::endl;
       }
 
       if (iteration_ == N_total_) {
-	for (int n = 0; n < 6; n++) {
+	for (int n = 0; n < 5; n++) {
 	  std::cout << grn_;
 	}
 	std::cout << std::endl;
@@ -82,7 +80,7 @@ namespace callbacks {
     const int N_draws_;
     const int N_total_;
     int iteration_;
-    const char *wordle_colors_[6];
+    const char *wordle_colors_[5];
 
     const long int start_ms_;
     std::default_random_engine g_;
@@ -102,14 +100,14 @@ namespace callbacks {
       return stops;
     }
 
-    void create_row_colors(const int stop_number, const int N, const char *wordle_colors[6]) {
+    void create_row_colors(const int stop_number, const int N, const char *wordle_colors[5]) {
       // init to all gray
-      for (int n = 0; n < 6; n++)
+      for (int n = 0; n < 5; n++)
 	wordle_colors[n] = &gry_[0];
 
-      for (int n = 0; n < 6; ++n) {
+      for (int n = 0; n < 5; ++n) {
 	// color green or yellow
-	if (n < 6 * stop_number / N) {
+	if (n < 5 * stop_number / N) {
 	  if (flip_(g_)) {
 	    wordle_colors[n] = &yel_[0];
 	  } else {
